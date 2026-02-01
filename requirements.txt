@@ -1,6 +1,10 @@
-python-dotenv    #USed for environment variables
+python-dotenv
 pandas
 numpy
 scikit-learn
 matplotlib
 seaborn
+pymongo
+certifi
+
+#-e .
