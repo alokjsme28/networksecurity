@@ -6,5 +6,7 @@ matplotlib
 seaborn
 pymongo
 certifi
+pymongo
+pymongo[srv]==3.10
 
 #-e .
