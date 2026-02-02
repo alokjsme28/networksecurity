@@ -8,5 +8,6 @@ pymongo
 certifi
 pymongo
 pymongo[srv]==3.10
-
+dill
+pyaml
 #-e .

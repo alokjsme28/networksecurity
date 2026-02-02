@@ -2,6 +2,7 @@ from networksecurity.exception.exception import NetworkSecurityException
 from networksecurity.logging.logger import logging
 import numpy as np
 import pymongo
+import certifi
 from typing import List
 from sklearn.model_selection import train_test_split
 import sys
@@ -30,7 +31,7 @@ class DataIngestion:
             database_name = self.data_ingestion_config.database_name
             collection_name = self.data_ingestion_config.collection_name
 
-            self.mongo_client = pymongo.MongoClient(MONGO_DB_URL)
+            self.mongo_client = pymongo.MongoClient(MONGO_DB_URL,tls=True,tlsCAFile=certifi.where()  )
             
             collection = self.mongo_client[database_name][collection_name]
             
