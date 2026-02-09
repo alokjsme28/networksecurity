@@ -11,7 +11,7 @@ def get_classification_score(y_true, y_pred) -> ClassificationMetricArtifact:
         model_recall_score = recall_score(y_true,y_pred)
         classification_metric = ClassificationMetricArtifact(
             precision_score=model_precision_score,
-            recall_Score=model_recall_score,
+            recall_score=model_recall_score,
             f1_score=model_f1_score
         )
         return classification_metric

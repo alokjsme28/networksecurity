@@ -16,6 +16,7 @@ from sklearn.ensemble import (RandomForestClassifier, AdaBoostClassifier, Gradie
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
+import mlflow
 
 class ModelTrainer:
     def __init__(self, 
@@ -24,6 +25,20 @@ class ModelTrainer:
         try:
             self.model_trainer_config = model_trainer_config
             self.data_transformation_artifact = data_transformation_artifact
+        except Exception as ex:
+            raise NetworkSecurityException(ex,sys)
+        
+    def track_mlflow(self, best_model, classificationmetrics):
+        try:
+            with mlflow.start_run():
+                f1_score = classificationmetrics.f1_score
+                recall_score = classificationmetrics.recall_score
+                precision_score = classificationmetrics.precision_score
+
+                mlflow.log_metric("f1_score",f1_score)
+                mlflow.log_metric("precision_score",precision_score)
+                mlflow.log_metric("recall_score",recall_score)
+                mlflow.sklearn.log_model(best_model, "model")
         except Exception as ex:
             raise NetworkSecurityException(ex,sys)
         
@@ -77,11 +92,15 @@ class ModelTrainer:
 
             classification_train_metric=get_classification_score(y_train,y_train_pred)
 
-            # Track ML FLOW
+            # Track the experiments with ML FLOW
+            self.track_mlflow(best_model,classification_train_metric)
 
             y_test_pred = best_model.predict(X_test)
 
             classification_test_metric = get_classification_score(y_test, y_test_pred)
+
+            #Trak teh experiments with MLFLOW
+            self.track_mlflow(best_model,classification_test_metric)
 
             preprocessor = load_object(self.data_transformation_artifact.transformed_object_file_path)
 
