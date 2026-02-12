@@ -18,6 +18,9 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
 import mlflow
 
+import dagshub
+dagshub.init(repo_owner='alokjsme28', repo_name='networksecurity', mlflow=True)
+
 class ModelTrainer:
     def __init__(self, 
                                 data_transformation_artifact:DataTransformationArtifact,
@@ -111,6 +114,8 @@ class ModelTrainer:
             network_model = NetworkModel(preprocessor, best_model)
 
             save_object(self.model_trainer_config.trained_model_file_path, network_model)
+
+            save_object("final_model/model.pkl",best_model)
 
             ## Model Trainer Artifact
 
